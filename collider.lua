@@ -64,15 +64,19 @@ function Collider:collider_contacts()
    local colliders = {}
    for i, contact in ipairs(contacts) do
       if contact:isTouching() then
-	 local f1, f2 = contact:getFixtures()
-	 if f1 == self.fixture then
-	    colliders[#colliders+1] = f2:getUserData()
-	 else
-	    colliders[#colliders+1] = f1:getUserData()
-	 end
+         colliders[#colliders+1] = self:get_other_collider(contact)
       end
    end
    return colliders
+end
+
+function Collider:get_other_collider(contact)
+   local f1, f2 = contact:getFixtures()
+   if f1 == self.fixture then
+      return f2:getUserData()
+   else
+      return f1:getUserData()
+   end
 end
 
 return Collider
